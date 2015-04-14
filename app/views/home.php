@@ -27,7 +27,7 @@
 
     <div class="col-lg-2 col-lg-offset-2">
       <div style="width:100%; height: 20px;"></div>
-      <a title="SRV Group" href="http://srv.uib.es"><img class="img-responsive" src="img/logo.png" width="150"></a>
+      <a title="Jacobs Robotics" href="http://robotics.jacobs-university.de"><img class="img-responsive" src="img/logo.png" width="150"></a>
     </div>
 
   </div>

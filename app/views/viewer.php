@@ -41,7 +41,7 @@ else {
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>SRV Pointcloud Viewer</title>
+    <title>Jacobs Robotics Pointcloud Viewer</title>
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -306,7 +306,7 @@ else {
         </p>
       </div>
       <div id="controls-iframe" style="position:absolute; top:5px; left:5px; z-index:999999; display:none;">
-        <a style="font-size:11px;" href="http://srv.uib.es/pointclouds/view/<?php echo $pcFolder ?>" target="_blank">view on srv.uib.es</a>
+        <a style="font-size:11px;" href="http://www.robotics.jacobs-university.de/pointclouds/view/<?php echo $pcFolder ?>" target="_blank">view on robotics.jacobs-university.de</a>
       </div>
 
       <div id="progressbar-container" class="progress progress-striped" style="position:absolute; z-index:999999; width:400px; top:230px;">
