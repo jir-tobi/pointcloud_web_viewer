@@ -20,10 +20,10 @@ define("PCIMG", "img.png");
 define("ENVIRONMENT", "development");
 
 // The development url
-define("DEVELURL", "http://localhost/srv.uib.es/pointclouds/");
+define("DEVELURL", "http://localhost/pointclouds/");
 
 // The production url
-define("PRODURL", "http://srv.uib.es/pointclouds/");
+define("PRODURL", "http://www.robotics.jacobs-university.de/objects/");
 
 
 

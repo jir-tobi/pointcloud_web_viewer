@@ -2,8 +2,6 @@
   include('header.php');
   ?>
 
-  <a href="https://github.com/srv/pointcloud_web_viewer"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
-
   <script type="text/javascript">
   $( document ).ready(function() {
       $("[rel='tooltip']").tooltip();
@@ -23,8 +21,8 @@
   <div class="row">
 
     <div class="col-lg-8">
-      <h1 style="font-size:50px;">SRV Pointclouds</h1><br />
-      <p class="lead">List of 3D reconstructions performed by researchers of our group. Your browser must have <a href="http://get.webgl.org/" target="_blank">WebGL support</a> for proper display.</p>
+      <h1 style="font-size:40px;">Jacobs Robotics Object Database</h1><br />
+      <p class="lead">Registered Point Clouds created from everyday objects.<br>Your browser must have <a href="http://get.webgl.org/" target="_blank">WebGL support</a> for proper display.</p>
     </div>
 
     <div class="col-lg-2 col-lg-offset-2">
