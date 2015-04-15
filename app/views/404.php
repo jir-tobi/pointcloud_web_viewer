@@ -6,8 +6,8 @@
   <div class="row" style="margin-bottom:50px;"></div>
   <div class="row">
 
-	<div style="text-align:center; width:100px; margin:0 auto 40px auto;">
-      <img class="img-responsive" src="img/404.png" width="100">
+	<div style="text-align:center; width:200px; margin:0 auto 40px auto;">
+      <img class="img-responsive" src="img/logo.png" width="200">
     </div>
     <div class="col-lg-12" style="text-align:center;">
       <p class="lead">Ooops, the pointcloud you have requested is not available...</p>

@@ -4,11 +4,13 @@
 $valid = true;
 $pcDataFolder = DATAFOLDER . '/' . $pcFolder;
 $pcFile = $pcDataFolder . '/' . PCFILE;
+$meshVerticesFile = $pcDataFolder . '/' . MESHVERTICESFILE;
+$meshFacesFile = $pcDataFolder . '/' . MESHFACESFILE;
 $infoFile = $pcDataFolder . '/' . PCINFO;
 if (!is_dir($pcDataFolder)) {
   $valid = false;
 }
-if (!file_exists($pcFile) || !file_exists($infoFile)) {
+if (!file_exists($pcFile) || !file_exists($meshVerticesFile) || !file_exists($meshFacesFile) || !file_exists($infoFile)) {
   $valid = false;
 }
 if (!$valid) {
@@ -17,21 +19,27 @@ if (!$valid) {
 }
 
 // Count the points of the pointcloud
-$lineCount = 0;
+$lineCountCloud = 0;
 $handle = fopen($pcFile, "r");
 while(!feof($handle)){
   $line = fgets($handle);
-  $lineCount++;
+  $lineCountCloud++;
 }
 fclose($handle);
-$lineCount--;
+$lineCountCloud--;
+
+$lineCountMesh = 0;
 
 // Pointcloud url
 if (ENVIRONMENT === 'production') {
   $pcUrl = PRODURL . $pcFile;
+  $meshVerticesUrl = PRODURL . $meshVerticesFile;
+  $meshFacesUrl = PRODURL . $meshFacesFile;
 }
 else {
   $pcUrl = DEVELURL . $pcFile;
+  $meshVerticesUrl = DEVELURL . $meshVerticesFile;
+  $meshFacesUrl = DEVELURL . $meshFacesFile;
 }
 
 ?>
@@ -57,6 +65,7 @@ else {
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/webgl-detector.js"></script>
     <script src="../js/three.min.js"></script>
+    <script src="../js/three.trackballcontrols.js"></script>
     <script src="../js/papaparse.min.js"></script>
     <script>
 
@@ -67,21 +76,6 @@ else {
         } else {
           return false;
         }
-      }
-
-      // Convert colors
-      function colorToHex(color) {
-        if (color.substr(0, 1) === '0x') {
-          return color;
-        }
-        var digits = /(.*?)rgb\((\d+),(\d+),(\d+)\)/.exec(color);
-
-        var red = parseInt(digits[2]);
-        var green = parseInt(digits[3]);
-        var blue = parseInt(digits[4]);
-
-        var rgb = blue | (green << 8) | (red << 16);
-        return digits[1] + '0x' + rgb.toString(16);
       }
 
       // Build a color
@@ -106,7 +100,7 @@ else {
 
         // Camera
         var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 300);
-        camera.position.z = -8;
+        camera.position.z = -1;
 
         // Detect webgl support
         if (!Detector.webgl) {
@@ -143,14 +137,59 @@ else {
         }
 
         // Init the geometry
-        var pointSize = 0.015;
-        var geometry = new THREE.Geometry({dynamic:true});
-        var material = new THREE.ParticleBasicMaterial({size:pointSize, vertexColors:true});
+        var pointSize = 0.005;
+        var geometryCloud = new THREE.Geometry({dynamic:true});
+        var geometryMesh = new THREE.Geometry({dynamic:true});
+        var material = new THREE.PointCloudMaterial({size:pointSize, vertexColors:true});
 
-        // Load the pointcloud
         var pointcloudLoaded = false;
-        var colors = [];
+        var useMesh = false;
+        var pcColors = [];
+        var meshColors = [];
         var min_x = 0, min_y = 0, min_z = 0, max_x = 0, max_y = 0, max_z = 0, freq = 0;
+
+        // Load the mesh vertices
+        Papa.parse("<?php echo $meshVerticesUrl ?>", {
+          download: true,
+          worker: true,
+          step: function(row) {
+            var line = row.data[0];
+            if (line.length != 3) return;
+
+            // Vertices
+            var x = parseFloat(line[0]);
+            var y = parseFloat(line[1]);
+            var z = parseFloat(line[2]);
+            if(x>max_x) max_x = x;
+            if(x<min_x) min_x = x;
+            if(y>max_y) max_y = y;
+            if(y<min_y) min_y = y;
+            if(z>max_z) max_z = z;
+            if(z<min_z) min_z = z;
+            geometryMesh.vertices.push(new THREE.Vector3(x, y, z));
+            
+            // Color
+            meshColors.push(new THREE.Color('rgb(255,255,255)'));
+            geometryMesh.colors = meshColors;
+
+          }
+        });
+        
+        // Load the mesh faces
+        Papa.parse("<?php echo $meshFacesUrl ?>", {
+          download: true,
+          worker: true,
+          step: function(row) {
+            var line = row.data[0];
+            if (line.length != 3) return;
+
+            // Faces
+            geometryMesh.faces.push(new THREE.Face3(line[0], line[1], line[2]));
+
+          }
+        });
+        
+        // Load the pointcloud
         Papa.parse("<?php echo $pcUrl ?>", {
           download: true,
           worker: true,
@@ -168,15 +207,14 @@ else {
             if(y<min_y) min_y = y;
             if(z>max_z) max_z = z;
             if(z<min_z) min_z = z;
-            geometry.vertices.push(new THREE.Vector3(x, y, z));
+            geometryCloud.vertices.push(new THREE.Vector3(x, y, z));
 
             // Color
-            var color = 'rgb(' + line[3] + ',' + line[4] + ',' + line[5] + ')';
-            colors.push(new THREE.Color(colorToHex(color)));
+            pcColors.push(new THREE.Color('rgb(' + line[3] + ',' + line[4] + ',' + line[5] + ')'));
 
             freq++;
             if (freq > 2000) {
-              var per = Math.round(geometry.vertices.length * 100 / <?php echo $lineCount ?>);
+              var per = Math.round((geometryCloud.vertices.length + geometryMesh.vertices.length) * 100 / (<?php echo $lineCountCloud ?> + <?php echo $lineCountMesh ?>));
               $("#progressbar").attr("aria-valuenow", per);
               $("#progressbar").css("width", per + "%");
               $("#progressbar").text(per + "%");
@@ -184,12 +222,13 @@ else {
             }
           },
           complete: function() {
-            console.log("Pointcloud with " + geometry.vertices.length + " points loaded.");
+            console.log("Pointcloud with " + geometryCloud.vertices.length + " points loaded.");
+            console.log("Mesh with " + geometryMesh.vertices.length + " vertices loaded.");
 
             // Build the scene
-            geometry.colors = colors;
-            var pointcloud = new THREE.ParticleSystem(geometry, material);
-            scene.fog = new THREE.FogExp2(0x000000, 0.0009);
+            geometryCloud.colors = pcColors;
+            var pointcloud = new THREE.PointCloud(geometryCloud, material);
+            //scene.fog = new THREE.FogExp2(0x000000, 0.0009);
             scene.add(pointcloud);
 
             // Remove the progressbar
@@ -213,18 +252,18 @@ else {
         // Changes the color of the points
         function changeColor(color_mode) {
           // Clear the geometry colors and maintain the vertices
-          var vertices = geometry.vertices;
-          geometry = new THREE.Geometry();
-          geometry.vertices = vertices;
+          var vertices = geometryCloud.vertices;
+          geometryCloud = new THREE.Geometry();
+          geometryCloud.vertices = vertices;
 
           if (color_mode == 'rgb')
-              geometry.colors = colors;
+              geometryCloud.colors = pcColors;
           else {
             var axis_colors = [];
-            for (var i=0; i<geometry.vertices.length; i++) {
-              var x = geometry.vertices[i].x;
-              var y = geometry.vertices[i].y;
-              var z = geometry.vertices[i].z;
+            for (var i=0; i<geometryCloud.vertices.length; i++) {
+              var x = geometryCloud.vertices[i].x;
+              var y = geometryCloud.vertices[i].y;
+              var z = geometryCloud.vertices[i].z;
               var t = 0;
               switch(color_mode) {
                 case 'x':
@@ -240,10 +279,15 @@ else {
                   alert('Color mode option not available');
                   break;
               }
-              axis_colors.push(new THREE.Color(colorToHex(buildColor(t))));
+              axis_colors.push(new THREE.Color(buildColor(t)));
             }
-            geometry.colors = axis_colors;
+            geometryCloud.colors = axis_colors;
           }
+        }
+        
+        // Changes the representation style
+        function changeRepresentation() {
+            useMesh = !useMesh;
         }
 
         // Zoom on wheel
@@ -268,22 +312,37 @@ else {
         function onKeyDown(evt) {
           if (pointcloudLoaded) {
             // Increase/decrease point size
-            if (evt.keyCode == 189 || evt.keyCode == 109)
-              pointSize -= 0.003;
-            if (evt.keyCode == 187 || evt.keyCode == 107)
-              pointSize += 0.003;
+            if (evt.keyCode == 189 || evt.keyCode == 109) {
+              pointSize -= 0.001;
+            }
+            if (evt.keyCode == 187 || evt.keyCode == 107) {
+              pointSize += 0.001;
+            }
+            if(pointSize < 0.0001) {
+                pointSize = 0.0001;
+            }
+            if(pointSize > 0.01) {
+                pointSize = 0.01;
+            }
 
-            if (evt.keyCode == 49) changeColor('x');
+            if (evt.keyCode == 32) changeRepresentation();
+            /*if (evt.keyCode == 49) changeColor('x');
             if (evt.keyCode == 50) changeColor('y');
             if (evt.keyCode == 51) changeColor('z');
-            if (evt.keyCode == 52) changeColor('rgb');
+            if (evt.keyCode == 52) changeColor('rgb');*/
 
             // Re-render the scene
-            material = new THREE.ParticleBasicMaterial({ size: pointSize, vertexColors: true });
-            var pointcloud = new THREE.ParticleSystem(geometry, material);
+            material = new THREE.PointCloudMaterial({ size: pointSize, opacity: 0.8, vertexColors: true });
+            var meshMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, vertexcolors: 0xffffff, wireframe: true });
+            var pointcloud = new THREE.PointCloud(geometryCloud, material);
+            var mesh = new THREE.Mesh(geometryMesh, meshMaterial);
             scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x000000, 0.0009);
-            scene.add(pointcloud);
+            if(useMesh) {
+                scene.add(mesh);
+            } else {
+                scene.add(pointcloud);
+            }
             render();
           }
         }
@@ -301,8 +360,9 @@ else {
       <div id="controls-browser" style="position:absolute; top:5px; left:5px; z-index:999999; display:none;">
         <a class="btn btn-sm btn-default" href="../home">Go home</a>
         <p style="color:#aaa; margin-top:5px; font-size:12px;">
-          - 1, 2, 3 &amp; 4 change color<br />
-          - +/- change point size
+          <!--- 1, 2, 3 &amp; 4: change color<br />-->
+          - space: change between point cloud/mesh representation<br />
+          - +/-: change point size
         </p>
       </div>
       <div id="controls-iframe" style="position:absolute; top:5px; left:5px; z-index:999999; display:none;">
@@ -310,7 +370,7 @@ else {
       </div>
 
       <div id="progressbar-container" class="progress progress-striped" style="position:absolute; z-index:999999; width:400px; top:230px;">
-        <div id="progressbar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="3" aria-valuemin="0" aria-valuemax="100" style="width:3%">3%</div>
+        <div id="progressbar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width:1%">1%</div>
       </div>
 
     </div>

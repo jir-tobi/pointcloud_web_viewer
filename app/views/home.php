@@ -27,7 +27,7 @@
 
     <div class="col-lg-2 col-lg-offset-2">
       <div style="width:100%; height: 20px;"></div>
-      <a title="Jacobs Robotics" href="http://robotics.jacobs-university.de"><img class="img-responsive" src="img/logo.png" width="150"></a>
+      <a title="Jacobs Robotics" href="http://robotics.jacobs-university.de"><img class="img-responsive" src="img/logo.png" width="250"></a>
     </div>
 
   </div>
@@ -80,9 +80,10 @@
                 <h2><?php echo $title ?></h2>
                 <div style="text-align:left; padding:10px;">
                   <h4><?php echo $desc ?></h4>
-                  <h4>Size: <?php echo $pcSize ?>MB.</h4>
+                  <h4>Point Cloud Size: <?php echo $pcSize ?>MB</h4>
                 </div>
-                <p><a class="btn btn-lg btn-primary" href="view/<?php echo $folderName ?>">View</a></p>
+                <p><a class="btn btn-lg btn-primary" href="view/<?php echo $folderName ?>">View</a>
+                <a class="btn btn-lg btn-primary" href="download/<?php echo $folderName ?>">Download</a></p>
               </div>
               <img class="img-responsive" src="<?php echo $imgFile ?>">
             </div>
