@@ -70,8 +70,10 @@
           if (!file_exists($imgFile)) {
             $imgFile = 'img/default.png';
           }
+          $dataFile = DATAFOLDER . '/' . $dirInfo->getFilename() . '/' . $dirInfo->getFilename() . '.zip';
 
-          $pcSize = round(filesize($pcFile) / (1024*1024));
+          $pcSize = round(filesize($pcFile) / (1000000));
+          $dataSize = round(filesize($dataFile) / (1000000));
 
           ?>
           <div class="col-lg-4 col-sm-4 col-xs-6">
@@ -80,10 +82,10 @@
                 <h2><?php echo $title ?></h2>
                 <div style="text-align:left; padding:10px;">
                   <h4><?php echo $desc ?></h4>
-                  <h4>Point Cloud Size: <?php echo $pcSize ?>MB</h4>
+                  <h5>Point Cloud Size: <?php echo $pcSize ?>MB, ZIP File Size: <?php echo $dataSize ?>MB</h5>
                 </div>
                 <p><a class="btn btn-lg btn-primary" href="view/<?php echo $folderName ?>">View</a>
-                <a class="btn btn-lg btn-primary" href="download/<?php echo $folderName ?>">Download</a></p>
+                <a class="btn btn-lg btn-primary" href="<?php echo $dataFile ?>">Download</a></p>
               </div>
               <img class="img-responsive" src="<?php echo $imgFile ?>">
             </div>
