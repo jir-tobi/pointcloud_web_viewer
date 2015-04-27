@@ -137,7 +137,7 @@ else {
         }
 
         // Init the geometry
-        var pointSize = 0.005;
+        var pointSize = 0.0001;
         var geometryCloud = new THREE.Geometry({dynamic:true});
         var geometryMesh = new THREE.Geometry({dynamic:true});
         var material = new THREE.PointCloudMaterial({size:pointSize, vertexColors:true});
