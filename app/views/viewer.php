@@ -358,9 +358,8 @@ else {
     <div id="container" style="width:100%; height:100%; position:relative;">
 
       <div id="controls-browser" style="position:absolute; top:5px; left:5px; z-index:999999; display:none;">
-        <a class="btn btn-sm btn-default" href="../home">Go home</a>
+        <a class="btn btn-sm btn-default" href="../home">back</a>
         <p style="color:#aaa; margin-top:5px; font-size:12px;">
-          <!--- 1, 2, 3 &amp; 4: change color<br />-->
           - space: change between point cloud/mesh representation<br />
           - +/-: change point size
         </p>
