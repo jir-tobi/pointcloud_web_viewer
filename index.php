@@ -19,13 +19,13 @@ define("MESHVERTICESFILE", "mesh_vertices.csv");
 define("MESHFACESFILE", "mesh_faces.csv");
 
 // Can be development or production
-define("ENVIRONMENT", "development");
+define("ENVIRONMENT", "production");
 
 // The development url
 define("DEVELURL", "http://localhost/pointclouds/");
 
 // The production url
-define("PRODURL", "http://www.robotics.jacobs-university.de/objects/");
+define("PRODURL", "http://www.robotics.jacobs-university.de/datasets/2015-watertight-meshes-v01/");
 
 
 
