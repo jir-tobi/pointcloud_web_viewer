@@ -1,4 +1,5 @@
 .thumbnail {
+    height: 250px;
     position:relative;
     overflow:hidden;
 }
