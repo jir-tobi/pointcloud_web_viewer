@@ -72,16 +72,31 @@
   <!-- Showcase -->
   <div class="row">
   <?php
+  $files_array = array();
   foreach (new DirectoryIterator(DATAFOLDER) as $dirInfo) {
     if($dirInfo->isDir() && !$dirInfo->isDot()) {
       // Info file
       $pcFile = DATAFOLDER . '/' . $dirInfo->getFilename() . '/' . PCFILE;
       $infoFile = DATAFOLDER . '/' . $dirInfo->getFilename() . '/' . PCINFO;
-
       if (file_exists($pcFile) && file_exists($infoFile)) {
+        // sort key, can also be a timestamp or something alike
+        $key = $dirInfo->getFilename();
+        $data = $dirInfo->getFilename();
+        $files_array[$key] = $data;
+	  }
+    }
+  }
+  ksort($files_array);
+
+  foreach($files_array as $key => $file){
+
+      $pcFile = DATAFOLDER . '/' . $file . '/' . PCFILE;
+      $infoFile = DATAFOLDER . '/' . $file . '/' . PCINFO;
+      $zipFile = DATAFOLDER . '/' . $file . '/' . $file . '.zip';
+      $bagFile = DATAFOLDER . '/' . $file . '/' . $file . '.bag.zip';
 
         // Read the info
-        $folderName = $dirInfo->getFilename();
+        $folderName = $file;
         $fi = fopen($infoFile, 'r');
         $title = fgetcsv($fi);
         $meta = fgetcsv($fi);
@@ -95,12 +110,10 @@
           if (sizeof($meta) == 2) {
             $desc = $meta[1];
           }
-          $imgFile = DATAFOLDER . '/' . $dirInfo->getFilename() . '/' . PCIMG;
+          $imgFile = DATAFOLDER . '/' . $file . '/' . PCIMG;
           if (!file_exists($imgFile)) {
             $imgFile = 'img/default.png';
           }
-          $zipFile = DATAFOLDER . '/' . $dirInfo->getFilename() . '/' . $dirInfo->getFilename() . '.zip';
-          $bagFile = DATAFOLDER . '/' . $dirInfo->getFilename() . '/' . $dirInfo->getFilename() . '.bag.zip';
 
           $pcSize = round(filesize($pcFile) / (1000000));
           $zipSize = round(filesize($zipFile) / (1000000));
@@ -116,7 +129,7 @@
                   Point Cloud (view): <?php echo $pcSize ?> MB<br>
                   <?php if (file_exists($zipFile)) { ?>Model: <?php echo $zipSize ?> MB<?php } ?><?php if (file_exists($bagFile)) { ?>, Bagfile: <?php echo $bagSize ?> GB<?php } ?>
                 </div>
-                <p><a class="btn btn-sm btn-primary" href="view/<?php echo $folderName ?>">View</a>
+                <p><a class="btn btn-sm btn-primary" href="view/<?php echo $file ?>">View</a>
                 <?php if (file_exists($zipFile)) { ?>
                 <a class="btn btn-sm btn-success" href="<?php echo $zipFile ?>">Model</a>
 				<?php } ?>
@@ -129,8 +142,6 @@
           </div>
           <?php
         }
-      }
-    }
   }
   ?>
   </div>
