@@ -33,7 +33,7 @@
   <div class="row">
 
     <div class="col-lg-8">
-      <h1 style="font-size:40px;">Jacobs Robotics Object Database</h1><br />
+      <h1 style="font-size:38px;">Jacobs Robotics Watertight Meshes Dataset</h1><br />
       <p class="lead">Point clouds, mesh representations and Gazebo models of everyday objects.</p>
 
       <button type="button" class="btn btn-primary btn-lg" id="buttonShow">Show detailed explanation</button>
