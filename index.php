@@ -22,10 +22,10 @@ define("MESHFACESFILE", "mesh_faces.csv");
 define("ENVIRONMENT", "production");
 
 // The development url
-define("DEVELURL", "http://localhost/pointclouds/");
+define("DEVELURL", "http://localhost/2015-watertight-meshes-v01/");
 
 // The production url
-define("PRODURL", "http://www.robotics.jacobs-university.de/datasets/2015-watertight-meshes-v01/");
+define("PRODURL", "http://robotics.jacobs-university.de/datasets/2015-watertight-meshes-v01/");
 
 
 
