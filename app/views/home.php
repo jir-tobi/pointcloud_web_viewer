@@ -42,7 +42,7 @@
       <br>
       The object point clouds available on this website were created from low-cost RGBD sensor data without user interaction, see our <a href="http://dx.doi.org/10.1016/j.robot.2015.01.005" target="_blank">publication</a>: <i>Mihalyi et al. (Robotics and Autonomous Systems, April 2015): Robust 3D Object Modeling with a Low-Cost RGBD-Sensor and AR-Markers for Applications with Untrained End-Users</i>.
       <br><br>
-      From these point clouds, watertight mesh representations were generated as described in <i>Fromm et al. (submitted to ICRA 2016): Unsupervised Watertight Mesh Generation From Noisy Free-Form RGBD Object Models Using Growing Neural Gas</i>.
+      From these point clouds, watertight mesh representations were generated as described in <i>Fromm et al. (submitted to IROS 2016): Unsupervised Watertight Mesh Generation for Physics Simulation From Noisy Free-Form Object Models Using Growing Neural Gas</i>.
       <br><br>
       Each object's point cloud and mesh can be viewed live. We provide zipped .bag files for the objects which were used in our modeling approach as well as .zip files containing:
 
