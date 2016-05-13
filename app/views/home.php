@@ -29,6 +29,13 @@
   
   </script>
 
+<style> 
+.refhighlightbox {
+    background-color: #e1dede;
+    box-shadow: 5px 5px 2px #888888;
+}
+</style>
+
   <!-- Top -->
   <div class="row">
 
@@ -36,17 +43,17 @@
       <h1 style="font-size:38px;">Jacobs Robotics Watertight Meshes Dataset</h1><br />
       <p class="lead">Point clouds, mesh representations and Gazebo models of everyday objects.</p>
 
-      <button type="button" class="btn btn-primary btn-lg" id="buttonShow">Show detailed explanation</button>
-
-      <p class="text hide" id="intro">
+      <p class="justify">
       <br>
-      The object point clouds available on this website were created from low-cost RGBD sensor data without user interaction, see our <a href="http://dx.doi.org/10.1016/j.robot.2015.01.005" target="_blank">publication</a>: <i>Mihalyi et al. (Robotics and Autonomous Systems, April 2015): Robust 3D Object Modeling with a Low-Cost RGBD-Sensor and AR-Markers for Applications with Untrained End-Users</i>.
-      <br><br>
-      From these point clouds, watertight mesh representations were generated as described in <i>Fromm et al. (submitted to IROS 2016): Unsupervised Watertight Mesh Generation for Physics Simulation Applications Using Growing Neural Gas on Noisy Free-Form Object Models</i>.
-      <br><br>
-      Each object's point cloud and mesh can be viewed live. We provide zipped .bag files for the objects which were used in our modeling approach as well as .zip files containing:
+      The object point clouds available on this website were created from low-cost RGBD sensor data without user interaction, see our <a href="http://dx.doi.org/10.1016/j.robot.2015.01.005" target="_blank">publication</a>:
+      <p class="refhighlightbox"><b>Razvan-George Mihalyi, Kaustubh Pathak, Narunas Vaskevicius, Tobias Fromm and Andreas Birk</b> <br> "Robust 3D Object Modeling with a Low-Cost RGBD-Sensor and AR-Markers<br>for Applications with Untrained End-Users" <br> In <i>Robotics and Autonomous Systems, April 2015</i></p>
+      <br>
+      From these point clouds, watertight mesh representations were generated as described in</p>
+      <p class="refhighlightbox"><b>Tobias Fromm, Christian A. Mueller and Andreas Birk</b> <br> "Unsupervised Watertight Mesh Generation for Physics Simulation Applications Using Growing Neural Gas<br>on Noisy Free-Form Object Models" <br> Submitted to <i>IROS 2016</i></p>
+      <br>
+      <p class="justify">Each object's point cloud and mesh can be viewed live. We provide zipped .bag files for the objects which were used in our modeling approach as well as .zip files containing:
 
-      <ul class="text hide" id="introul">
+      <ul class="text" id="introul">
           <li>PCD point cloud</li>
           <li>PLY mesh</li>
           <li>PNG preview image</li>
