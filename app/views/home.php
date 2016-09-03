@@ -45,11 +45,11 @@
 
       <p class="justify">
       <br>
-      The object point clouds available on this website were created from low-cost RGBD sensor data without user interaction, see our <a href="http://dx.doi.org/10.1016/j.robot.2015.01.005" target="_blank">publication</a>:
-      <p class="refhighlightbox"><b>Razvan-George Mihalyi, Kaustubh Pathak, Narunas Vaskevicius, Tobias Fromm and Andreas Birk</b> <br> "Robust 3D Object Modeling with a Low-Cost RGBD-Sensor and AR-Markers<br>for Applications with Untrained End-Users" <br> In <i>Robotics and Autonomous Systems, April 2015</i></p>
+      The object point clouds available on this website were created from low-cost RGBD sensor data without user interaction, see our first <a href="http://dx.doi.org/10.1016/j.robot.2015.01.005" target="_blank">publication</a>:
+      <p class="refhighlightbox"><b>Razvan-George Mihalyi, Kaustubh Pathak, Narunas Vaskevicius, Tobias Fromm and Andreas Birk</b> <br> "Robust 3D Object Modeling with a Low-Cost RGBD-Sensor and AR-Markers<br>for Applications with Untrained End-Users" <br> In <i>Robotics and Autonomous Systems</i>, April 2015</p>
       <br>
-      From these point clouds, watertight mesh representations were generated as described in</p>
-      <p class="refhighlightbox"><b>Tobias Fromm, Christian A. Mueller and Andreas Birk</b> <br> "Unsupervised Watertight Mesh Generation for Physics Simulation Applications Using Growing Neural Gas<br>on Noisy Free-Form Object Models" <br> Submitted to <i>IROS 2016</i></p>
+      From these point clouds, watertight mesh representations were generated as described in our second <a href="https://arxiv.org/abs/1603.00663" target="_blank">publication</a>:</p>
+      <p class="refhighlightbox"><b>Tobias Fromm, Christian A. Mueller and Andreas Birk</b> <br> "Unsupervised Watertight Mesh Generation for Physics Simulation Applications Using Growing Neural Gas<br>on Noisy Free-Form Object Models" <br> In <i>arXiv.org</i>, https://arxiv.org/abs/1603.00663, September 2016</p>
       <br>
       <p class="justify">Each object's point cloud and mesh can be viewed live. We provide zipped .bag files for the objects which were used in our modeling approach as well as .zip files containing:
 
